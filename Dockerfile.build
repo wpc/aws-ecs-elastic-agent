@@ -1,0 +1,14 @@
+FROM ubuntu:trusty
+MAINTAINER GoCD Team <go-cd@googlegroups.com>
+
+# install gocd-golang-agent
+RUN echo deb https://dl.bintray.com/alex-hal9000/gocd-golang-agent master main | tee -a /etc/apt/sources.list
+RUN apt-get -y install apt-transport-https
+RUN apt-get -y update
+RUN apt-get -y --force-yes install gocd-golang-agent
+
+# install project specific packages
+RUN apt-get -y install openjdk-7-jre-headless curl git
+RUN mkdir -p /usr/local
+RUN curl --silent --location --fail http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -zxf - -C /usr/local
+RUN ln -sf /usr/local/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn
